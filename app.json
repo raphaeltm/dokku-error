@@ -1,7 +1,0 @@
-{
-  "scripts": {
-    "dokku": {
-      "postdeploy": "pipenv run python manage.py migrate"
-    }
-  }
-}
