@@ -1,0 +1,28 @@
+version: '3.6'
+services:
+  database:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: password
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - dokku_db_data:/var/lib/postgresql/data
+  django:
+    build:
+      context: ./
+    volumes:
+      - ./:/app
+    environment:
+      ENVIRONMENT: dev
+      SECRET_KEY: "0j(b)990#wxbsl31dc(uvz3=eji=diebw77_L!88=)jo8mv#bk"
+      PIPENV_VENV_IN_PROJECT: 1
+      DATABASE_URL: postgres://postgres:password@database:5432/postgres
+    ports:
+      - "8000:8000"
+    command: pipenv run python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - database
+volumes:
+  dokku_db_data:
